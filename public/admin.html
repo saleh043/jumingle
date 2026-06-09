@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Jumingle</title>
+  <link rel="icon" href="/favicon.svg" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: {
+      jgreen: '#22C55E', jblue: '#0EA5E9', jdark: '#111827'
+    } } } };
+  </script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- ===== Login box (shown first) ===== -->
+  <div id="login" class="min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-lg w-full max-w-sm p-8 text-center">
+      <img src="/logo.svg" class="w-12 h-12 mx-auto" alt="Jumingle" />
+      <h1 class="text-xl font-bold text-jdark mt-3">Admin Login</h1>
+      <input id="password" type="password" placeholder="Password"
+        class="w-full border border-gray-300 rounded-xl px-4 py-2.5 mt-4 focus:outline-none focus:ring-2 focus:ring-jgreen" />
+      <button id="login-btn"
+        class="w-full bg-jgreen text-white font-semibold py-3 rounded-xl mt-3 hover:opacity-90">Log in</button>
+      <p id="login-error" class="text-red-500 text-sm mt-2 hidden">Wrong password</p>
+    </div>
+  </div>
+
+  <!-- ===== Dashboard (shown after login) ===== -->
+  <div id="dashboard" class="hidden max-w-4xl mx-auto p-4">
+    <div class="flex items-center justify-between py-4">
+      <h1 class="text-2xl font-bold text-jdark">Jumingle Admin</h1>
+      <button id="refresh" class="text-sm bg-jblue text-white px-4 py-2 rounded-xl hover:opacity-90">Refresh</button>
+    </div>
+
+    <!-- Stat cards -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div class="bg-white rounded-2xl shadow p-4 text-center">
+        <div id="stat-online" class="text-2xl font-bold text-jgreen">0</div>
+        <div class="text-xs text-gray-500 mt-1">Users online</div>
+      </div>
+      <div class="bg-white rounded-2xl shadow p-4 text-center">
+        <div id="stat-chats" class="text-2xl font-bold text-jblue">0</div>
+        <div class="text-xs text-gray-500 mt-1">Active chats</div>
+      </div>
+      <div class="bg-white rounded-2xl shadow p-4 text-center">
+        <div id="stat-reports" class="text-2xl font-bold text-jdark">0</div>
+        <div class="text-xs text-gray-500 mt-1">Reports</div>
+      </div>
+      <div class="bg-white rounded-2xl shadow p-4 text-center">
+        <div id="stat-bans" class="text-2xl font-bold text-red-500">0</div>
+        <div class="text-xs text-gray-500 mt-1">Active bans</div>
+      </div>
+    </div>
+
+    <!-- Ban an IP by hand -->
+    <div class="bg-white rounded-2xl shadow p-4 mt-4">
+      <h2 class="font-semibold text-jdark mb-2">Ban an IP address</h2>
+      <div class="flex flex-col sm:flex-row gap-2">
+        <input id="ban-ip" placeholder="IP address" class="flex-1 border border-gray-300 rounded-xl px-3 py-2" />
+        <input id="ban-reason" placeholder="Reason (optional)" class="flex-1 border border-gray-300 rounded-xl px-3 py-2" />
+        <button id="ban-btn" class="bg-red-500 text-white font-semibold px-4 py-2 rounded-xl hover:opacity-90">Ban</button>
+      </div>
+    </div>
+
+    <!-- Reports table -->
+    <div class="bg-white rounded-2xl shadow p-4 mt-4">
+      <h2 class="font-semibold text-jdark mb-2">Recent reports</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead class="text-gray-400 border-b">
+            <tr><th class="py-2">When</th><th>Reported name</th><th>Reported IP</th><th>Reason</th><th></th></tr>
+          </thead>
+          <tbody id="reports-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Bans table -->
+    <div class="bg-white rounded-2xl shadow p-4 mt-4 mb-8">
+      <h2 class="font-semibold text-jdark mb-2">Active bans</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead class="text-gray-400 border-b">
+            <tr><th class="py-2">IP</th><th>Reason</th><th>Expires</th><th></th></tr>
+          </thead>
+          <tbody id="bans-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>

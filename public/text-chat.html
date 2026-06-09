@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Text Chat - Jumingle</title>
+  <link rel="icon" href="/favicon.svg" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: {
+      jgreen: '#22C55E', jblue: '#0EA5E9', jdark: '#111827'
+    } } } };
+  </script>
+</head>
+<body class="bg-gray-50 h-screen flex flex-col">
+
+  <!-- ===== Top: logo + connection status ===== -->
+  <header class="bg-white shadow-sm shrink-0">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2">
+        <img src="/logo.svg" alt="Jumingle" class="w-8 h-8" />
+        <span class="font-bold text-jdark">Jumingle</span>
+      </a>
+      <div id="status" class="text-sm font-medium text-gray-500">Connecting...</div>
+    </div>
+  </header>
+
+  <!-- ===== Middle: messages ===== -->
+  <main id="messages" class="scroll-area flex-1 overflow-y-auto">
+    <div class="max-w-3xl mx-auto px-4 py-4 flex flex-col"></div>
+  </main>
+
+  <!-- ===== Bottom: input + buttons ===== -->
+  <footer class="bg-white border-t shrink-0">
+    <div class="max-w-3xl mx-auto px-4 py-3">
+      <div class="flex gap-2">
+        <button id="btn-next"
+          class="bg-jblue text-white font-semibold px-4 rounded-xl hover:opacity-90">Next</button>
+        <input id="input" type="text" placeholder="Type a message and press Enter..."
+          class="flex-1 border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-jgreen" />
+        <button id="btn-send"
+          class="bg-jgreen text-white font-semibold px-5 rounded-xl hover:opacity-90">Send</button>
+      </div>
+      <div class="flex justify-between items-center mt-2 text-xs text-gray-400">
+        <span>Enter = Send &nbsp;&middot;&nbsp; ESC = Next stranger</span>
+        <div class="flex gap-3">
+          <button id="btn-report" class="hover:text-red-500">Report</button>
+          <button id="btn-stop" class="hover:text-jdark">Disconnect</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== 18+ age gate (shown once, before the first chat) ===== -->
+  <div id="age-gate" class="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center">
+      <img src="/logo.svg" class="w-12 h-12 mx-auto" alt="Jumingle" />
+      <h2 class="text-lg font-bold text-jdark mt-3">Before you start</h2>
+      <p class="text-sm text-gray-500 mt-2">
+        Jumingle connects you with random strangers. You must be 18 or older.
+        Do not share personal information. Be respectful.
+      </p>
+      <button id="age-ok"
+        class="mt-5 w-full bg-jgreen text-white font-semibold py-3 rounded-xl hover:opacity-90">
+        I am 18 or older - Start
+      </button>
+      <a href="/" class="block mt-3 text-sm text-gray-400 hover:text-jdark">Leave</a>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/chat.js"></script>
+</body>
+</html>

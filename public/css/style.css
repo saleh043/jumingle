@@ -1,0 +1,112 @@
+/* =====================================================================
+   Jumingle - style.css
+   Tailwind (loaded from a CDN in each HTML page) does most of the work.
+   This file only adds a few small things Tailwind can't do as cleanly:
+   brand colours, chat bubbles, the video layout, and smooth transitions.
+   ===================================================================== */
+
+/* Brand colours kept in one place so they are easy to change. */
+:root {
+  --green: #22C55E;
+  --blue:  #0EA5E9;
+  --dark:  #111827;
+}
+
+/* A soft, friendly page background. */
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--dark);
+}
+
+/* Make every button feel smooth when hovered or pressed. */
+button, a {
+  transition: all 0.15s ease;
+}
+
+/* ---- Chat message bubbles ---- */
+.bubble {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  margin: 6px 0;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+.bubble-you {           /* messages I send */
+  background: var(--green);
+  color: #fff;
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+.bubble-stranger {      /* messages from the stranger */
+  background: #e5e7eb;
+  color: var(--dark);
+  margin-right: auto;
+  border-bottom-left-radius: 4px;
+}
+.bubble-system {        /* grey centred status notes */
+  background: transparent;
+  color: #6b7280;
+  font-size: 0.85rem;
+  text-align: center;
+  margin: 8px auto;
+}
+
+/* A nicer, thin scrollbar for the chat area. */
+.scroll-area::-webkit-scrollbar { width: 8px; }
+.scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+
+/* ---- Video chat layout ---- */
+.video-stage {
+  position: relative;
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.video-stage video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* The small "you" preview floats in the bottom-right corner. */
+.local-preview {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 28%;
+  max-width: 180px;
+  border: 3px solid #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+/* The "Searching for stranger..." overlay sits on top of the video. */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  color: #fff;
+  background: rgba(17, 24, 39, 0.85);
+  z-index: 20;
+  text-align: center;
+  padding: 20px;
+}
+
+/* A simple spinning loader. */
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid rgba(255,255,255,0.3);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Respect users who prefer no animation (accessibility). */
+@media (prefers-reduced-motion: reduce) {
+  *, button, a { transition: none !important; animation: none !important; }
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jumingle - Meet New People Instantly</title>
+  <link rel="icon" href="/favicon.svg" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <!-- Tailwind CSS straight from a CDN - no build step needed. -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Make our brand colours available as Tailwind classes (bg-jgreen, etc.)
+    tailwind.config = { theme: { extend: { colors: {
+      jgreen: '#22C55E', jblue: '#0EA5E9', jdark: '#111827'
+    } } } };
+  </script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+  <!-- ===== Top navigation ===== -->
+  <nav class="bg-white shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2">
+        <img src="/logo.svg" alt="Jumingle" class="w-9 h-9" />
+        <span class="text-xl font-bold text-jdark">Jumingle</span>
+      </a>
+      <div class="flex items-center gap-5 text-sm font-medium text-gray-600">
+        <a href="/" class="hover:text-jgreen">Home</a>
+        <a href="/privacy.html" class="hover:text-jgreen">Privacy</a>
+        <a href="/terms.html" class="hover:text-jgreen">Terms</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== Hero section ===== -->
+  <main class="flex-1 flex items-center justify-center px-4 py-10">
+    <div class="bg-white rounded-2xl shadow-lg w-full max-w-lg p-8 text-center">
+
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-jdark">
+        Meet New People Instantly
+      </h1>
+      <p class="text-gray-500 mt-3">
+        Anonymous text and video chat with strangers worldwide.
+      </p>
+
+      <!-- Live online counter (filled in by main.js) -->
+      <div class="mt-5 inline-flex items-center gap-2 text-sm text-gray-500">
+        <span class="w-2.5 h-2.5 rounded-full bg-jgreen inline-block"></span>
+        <span id="online-count">...</span> users online
+      </div>
+
+      <!-- Interests (optional) -->
+      <div class="mt-6 text-left">
+        <label for="interests" class="block text-sm font-medium text-gray-700 mb-1">
+          Your interests <span class="text-gray-400">(optional, comma separated)</span>
+        </label>
+        <input id="interests" type="text" placeholder="music, gaming, travel"
+          class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-jgreen" />
+      </div>
+
+      <!-- Start buttons -->
+      <div class="mt-6 flex flex-col sm:flex-row gap-3">
+        <button id="start-text"
+          class="flex-1 bg-jgreen text-white font-semibold py-3 rounded-xl shadow hover:opacity-90">
+          Start Text Chat
+        </button>
+        <button id="start-video"
+          class="flex-1 bg-jblue text-white font-semibold py-3 rounded-xl shadow hover:opacity-90">
+          Start Video Chat
+        </button>
+      </div>
+
+      <!-- Required age / safety notice -->
+      <p class="mt-6 text-xs text-gray-400">
+        You must be 18 or older to use Jumingle. By starting a chat you agree to our
+        <a href="/terms.html" class="underline">Terms</a> and
+        <a href="/privacy.html" class="underline">Privacy Policy</a>.
+        Be kind. Use the Report button for bad behaviour.
+      </p>
+    </div>
+  </main>
+
+  <footer class="text-center text-xs text-gray-400 py-4">
+    &copy; 2025 Jumingle
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
