@@ -4,37 +4,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Video Chat - Jumingle</title>
-  <link rel="icon" href="/favicon.svg" />
+  <link rel="icon" href="/assets/favicon.svg" />
   <link rel="stylesheet" href="/css/style.css" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { theme: { extend: { colors: {
-      jgreen: '#22C55E', jblue: '#0EA5E9', jdark: '#111827'
+      jgreen: '#22C55E', jblue: '#0EA5E9', jcyan: '#22D3EE',
+      jdark: '#0B1220', jpanel: '#111A2E', jborder: '#1E293B'
     } } } };
   </script>
 </head>
-<body class="bg-gray-50 h-screen flex flex-col">
+<body class="bg-jdark text-slate-200 h-screen flex flex-col">
 
-  <!-- ===== Top: logo + status ===== -->
-  <header class="bg-white shadow-sm shrink-0">
-    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+  <!-- ===== Header ===== -->
+  <header class="bg-jpanel border-b border-jborder shrink-0">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
       <a href="/" class="flex items-center gap-2">
-        <img src="/logo.svg" alt="Jumingle" class="w-8 h-8" />
-        <span class="font-bold text-jdark">Jumingle</span>
+        <img src="/assets/logo.svg" alt="Jumingle" class="w-8 h-8" />
+        <span class="font-bold text-white">Jumingle</span>
       </a>
-      <div id="status" class="text-sm font-medium text-gray-500">Connecting...</div>
+      <div id="status" class="text-sm font-medium text-slate-400">Connecting...</div>
     </div>
   </header>
 
-  <!-- ===== Middle: the video stage ===== -->
+  <!-- ===== Video stage ===== -->
   <main class="flex-1 overflow-hidden">
-    <div class="max-w-3xl mx-auto h-full px-4 py-4">
+    <div class="max-w-4xl mx-auto h-full px-4 py-4">
       <div class="video-stage h-full">
-        <!-- Stranger's camera (big) -->
         <video id="remote-video" autoplay playsinline></video>
-        <!-- Your own camera (small corner preview, muted so you don't echo) -->
         <video id="local-video" class="local-preview" autoplay playsinline muted></video>
-        <!-- Overlay shown while searching -->
         <div id="overlay" class="overlay">
           <div class="spinner"></div>
           <div id="overlay-text">Searching for stranger...</div>
@@ -43,35 +41,47 @@
     </div>
   </main>
 
-  <!-- ===== Bottom: controls ===== -->
-  <footer class="bg-white border-t shrink-0">
-    <div class="max-w-3xl mx-auto px-4 py-3 flex flex-wrap gap-2 justify-center">
-      <button id="btn-next"   class="bg-jblue text-white font-semibold px-5 py-2.5 rounded-xl hover:opacity-90">Next</button>
-      <button id="btn-mute"   class="bg-gray-200 text-jdark font-semibold px-5 py-2.5 rounded-xl hover:bg-gray-300">Mute</button>
-      <button id="btn-cam"    class="bg-gray-200 text-jdark font-semibold px-5 py-2.5 rounded-xl hover:bg-gray-300">Camera Off</button>
-      <button id="btn-report" class="bg-gray-200 text-jdark font-semibold px-5 py-2.5 rounded-xl hover:bg-gray-300">Report</button>
-      <button id="btn-stop"   class="bg-gray-800 text-white font-semibold px-5 py-2.5 rounded-xl hover:opacity-90">Disconnect</button>
+  <!-- ===== Controls ===== -->
+  <footer class="bg-jpanel border-t border-jborder shrink-0">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex flex-wrap gap-2 justify-center">
+      <button id="btn-next"   class="bg-jblue text-white font-semibold px-5 py-2.5 rounded-xl hover:opacity-90">Next stranger</button>
+      <button id="btn-mute"   class="bg-jdark border border-jborder text-slate-200 font-semibold px-5 py-2.5 rounded-xl hover:bg-slate-800">Mute</button>
+      <button id="btn-cam"    class="bg-jdark border border-jborder text-slate-200 font-semibold px-5 py-2.5 rounded-xl hover:bg-slate-800">Camera Off</button>
+      <button id="btn-report" class="bg-jdark border border-jborder text-slate-200 font-semibold px-5 py-2.5 rounded-xl hover:bg-slate-800">Report</button>
+      <button id="btn-stop"   class="bg-slate-700 text-white font-semibold px-5 py-2.5 rounded-xl hover:opacity-90">Disconnect</button>
     </div>
   </footer>
 
-  <!-- ===== 18+ age gate ===== -->
-  <div id="age-gate" class="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center">
-      <img src="/logo.svg" class="w-12 h-12 mx-auto" alt="Jumingle" />
-      <h2 class="text-lg font-bold text-jdark mt-3">Camera access needed</h2>
-      <p class="text-sm text-gray-500 mt-2">
-        Video chat connects you with random strangers. You must be 18 or older.
-        We'll ask your browser for camera and microphone permission next.
+  <!-- ===== Nickname + 18+ modal ===== -->
+  <div id="nick-gate" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
+    <div class="bg-jpanel border border-jborder rounded-2xl max-w-sm w-full p-6 text-center">
+      <img src="/assets/logo.svg" class="w-12 h-12 mx-auto" alt="Jumingle" />
+      <h2 class="text-lg font-bold text-white mt-3">Choose a nickname</h2>
+      <p class="text-sm text-slate-400 mt-2">
+        Video chat connects you with random strangers. We'll ask for camera and
+        microphone access next. Your nickname is kept only for this session.
       </p>
-      <button id="age-ok"
-        class="mt-5 w-full bg-jgreen text-white font-semibold py-3 rounded-xl hover:opacity-90">
-        I am 18 or older - Allow camera
-      </button>
-      <a href="/" class="block mt-3 text-sm text-gray-400 hover:text-jdark">Leave</a>
+      <form id="nick-form" class="mt-4 text-left">
+        <input id="nick-input" type="text" maxlength="20" placeholder="e.g. CoralFox"
+          class="w-full bg-jdark border border-jborder rounded-xl px-4 py-2.5 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-jgreen" />
+        <label class="flex items-start gap-2 mt-3 text-xs text-slate-400">
+          <input id="nick-agree" type="checkbox" class="mt-0.5" />
+          <span>I am 18 or older and agree to the
+            <a href="/terms.html" class="underline">Terms</a> and
+            <a href="/privacy.html" class="underline">Privacy Policy</a>.</span>
+        </label>
+        <p id="nick-error" class="text-red-400 text-xs mt-2 hidden"></p>
+        <button type="submit"
+          class="mt-4 w-full bg-jgreen text-jdark font-semibold py-3 rounded-xl hover:opacity-90">
+          Allow camera &amp; start
+        </button>
+      </form>
+      <a href="/" class="block mt-3 text-sm text-slate-500 hover:text-white">Leave</a>
     </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/session.js"></script>
   <script src="/js/video.js"></script>
 </body>
 </html>

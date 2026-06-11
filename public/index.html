@@ -3,85 +3,213 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jumingle - Meet New People Instantly</title>
-  <link rel="icon" href="/favicon.svg" />
+  <title>Jumingle - Anonymous Text & Video Chat With Strangers</title>
+  <meta name="description" content="Jumingle is a free, anonymous text and video chat platform. Meet new people instantly - no account needed." />
+  <link rel="icon" href="/assets/favicon.svg" />
   <link rel="stylesheet" href="/css/style.css" />
-  <!-- Tailwind CSS straight from a CDN - no build step needed. -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    // Make our brand colours available as Tailwind classes (bg-jgreen, etc.)
     tailwind.config = { theme: { extend: { colors: {
-      jgreen: '#22C55E', jblue: '#0EA5E9', jdark: '#111827'
+      jgreen: '#22C55E', jblue: '#0EA5E9', jcyan: '#22D3EE',
+      jdark: '#0B1220', jpanel: '#111A2E', jborder: '#1E293B'
     } } } };
   </script>
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
+<body class="bg-jdark text-slate-200 min-h-screen flex flex-col">
 
-  <!-- ===== Top navigation ===== -->
-  <nav class="bg-white shadow-sm">
-    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+  <!-- ===== Navigation ===== -->
+  <nav class="sticky top-0 z-40 bg-jdark/80 backdrop-blur border-b border-jborder">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
       <a href="/" class="flex items-center gap-2">
-        <img src="/logo.svg" alt="Jumingle" class="w-9 h-9" />
-        <span class="text-xl font-bold text-jdark">Jumingle</span>
+        <img src="/assets/logo.svg" alt="Jumingle" class="w-9 h-9" />
+        <span class="text-xl font-bold text-white">Jumingle</span>
       </a>
-      <div class="flex items-center gap-5 text-sm font-medium text-gray-600">
-        <a href="/" class="hover:text-jgreen">Home</a>
-        <a href="/privacy.html" class="hover:text-jgreen">Privacy</a>
-        <a href="/terms.html" class="hover:text-jgreen">Terms</a>
+      <div class="hidden sm:flex items-center gap-6 text-sm font-medium text-slate-400">
+        <a href="#features" class="hover:text-jgreen">Features</a>
+        <a href="#how" class="hover:text-jgreen">How it works</a>
+        <a href="/about.html" class="hover:text-jgreen">About</a>
+        <a href="/support.html" class="hover:text-jgreen">Support</a>
       </div>
+      <a href="#start" class="bg-jgreen text-jdark font-semibold px-4 py-2 rounded-xl hover:opacity-90 text-sm">Start chatting</a>
     </div>
   </nav>
 
-  <!-- ===== Hero section ===== -->
-  <main class="flex-1 flex items-center justify-center px-4 py-10">
-    <div class="bg-white rounded-2xl shadow-lg w-full max-w-lg p-8 text-center">
+  <main class="flex-1">
+    <!-- ===== Hero ===== -->
+    <section id="start" class="max-w-6xl mx-auto px-4 pt-14 pb-10 grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 text-xs font-medium text-slate-400 bg-jpanel border border-jborder rounded-full px-3 py-1">
+          <span class="w-2 h-2 rounded-full bg-jgreen inline-block animate-pulse"></span>
+          <span id="online-count">...</span> people online now
+        </div>
+        <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight mt-5">
+          Meet new people <span class="brand-gradient">instantly</span>
+        </h1>
+        <p class="text-slate-400 mt-4 text-lg">
+          Anonymous text and video chat with strangers worldwide. No sign-up,
+          no downloads - just press a button and say hello.
+        </p>
 
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-jdark">
-        Meet New People Instantly
-      </h1>
-      <p class="text-gray-500 mt-3">
-        Anonymous text and video chat with strangers worldwide.
-      </p>
+        <!-- Interests -->
+        <div class="mt-6">
+          <label for="interests" class="block text-sm font-medium text-slate-300 mb-1">
+            Your interests <span class="text-slate-500">(optional, comma separated)</span>
+          </label>
+          <input id="interests" type="text" placeholder="music, gaming, travel"
+            class="w-full bg-jpanel border border-jborder rounded-xl px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-jgreen" />
+        </div>
 
-      <!-- Live online counter (filled in by main.js) -->
-      <div class="mt-5 inline-flex items-center gap-2 text-sm text-gray-500">
-        <span class="w-2.5 h-2.5 rounded-full bg-jgreen inline-block"></span>
-        <span id="online-count">...</span> users online
+        <!-- Start buttons -->
+        <div class="mt-5 flex flex-col sm:flex-row gap-3">
+          <button id="start-text"
+            class="flex-1 bg-jgreen text-jdark font-semibold py-3.5 rounded-xl shadow hover:opacity-90">
+            💬 Start Text Chat
+          </button>
+          <button id="start-video"
+            class="flex-1 bg-jblue text-white font-semibold py-3.5 rounded-xl shadow hover:opacity-90">
+            📷 Start Video Chat
+          </button>
+        </div>
+
+        <p class="mt-4 text-xs text-slate-500">
+          You must be 18 or older. By starting a chat you agree to our
+          <a href="/terms.html" class="underline hover:text-slate-300">Terms</a> and
+          <a href="/privacy.html" class="underline hover:text-slate-300">Privacy Policy</a>.
+        </p>
       </div>
 
-      <!-- Interests (optional) -->
-      <div class="mt-6 text-left">
-        <label for="interests" class="block text-sm font-medium text-gray-700 mb-1">
-          Your interests <span class="text-gray-400">(optional, comma separated)</span>
-        </label>
-        <input id="interests" type="text" placeholder="music, gaming, travel"
-          class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-jgreen" />
+      <!-- Hero visual -->
+      <div class="relative">
+        <div class="absolute -inset-6 bg-gradient-to-tr from-jgreen/20 via-jcyan/10 to-jblue/20 blur-2xl rounded-full"></div>
+        <div class="relative bg-jpanel border border-jborder rounded-3xl p-6 shadow-xl">
+          <div class="video-stage aspect-video flex items-center justify-center">
+            <img src="/assets/logo.svg" alt="" class="w-24 h-24 opacity-90" />
+          </div>
+          <div class="flex items-center gap-2 mt-4">
+            <span class="bubble bubble-stranger !my-0">Hey, where are you from? 🌍</span>
+          </div>
+          <div class="flex items-center gap-2 mt-2 justify-end">
+            <span class="bubble bubble-you !my-0">Hi! Nice to meet you 👋</span>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <!-- Start buttons -->
-      <div class="mt-6 flex flex-col sm:flex-row gap-3">
-        <button id="start-text"
-          class="flex-1 bg-jgreen text-white font-semibold py-3 rounded-xl shadow hover:opacity-90">
-          Start Text Chat
-        </button>
-        <button id="start-video"
-          class="flex-1 bg-jblue text-white font-semibold py-3 rounded-xl shadow hover:opacity-90">
-          Start Video Chat
-        </button>
+    <!-- ===== Banner ad placeholder (homepage only) ===== -->
+    <section class="max-w-6xl mx-auto px-4 py-4">
+      <div class="ad-banner h-24 flex items-center justify-center text-sm">
+        Advertisement &middot; 728&times;90 banner placeholder
       </div>
+    </section>
 
-      <!-- Required age / safety notice -->
-      <p class="mt-6 text-xs text-gray-400">
-        You must be 18 or older to use Jumingle. By starting a chat you agree to our
-        <a href="/terms.html" class="underline">Terms</a> and
-        <a href="/privacy.html" class="underline">Privacy Policy</a>.
-        Be kind. Use the Report button for bad behaviour.
-      </p>
-    </div>
+    <!-- ===== Features ===== -->
+    <section id="features" class="max-w-6xl mx-auto px-4 py-14">
+      <h2 class="text-3xl font-bold text-center text-white">Why Jumingle?</h2>
+      <p class="text-center text-slate-400 mt-2">Simple, private, and built for real conversations.</p>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-10">
+        <div class="bg-jpanel border border-jborder rounded-2xl p-6">
+          <div class="text-3xl">🕵️</div>
+          <h3 class="font-semibold text-white mt-3">Truly anonymous</h3>
+          <p class="text-sm text-slate-400 mt-1">No account, no email. Pick a nickname and go.</p>
+        </div>
+        <div class="bg-jpanel border border-jborder rounded-2xl p-6">
+          <div class="text-3xl">⚡</div>
+          <h3 class="font-semibold text-white mt-3">Instant matching</h3>
+          <p class="text-sm text-slate-400 mt-1">Queue-based pairing connects you in seconds.</p>
+        </div>
+        <div class="bg-jpanel border border-jborder rounded-2xl p-6">
+          <div class="text-3xl">🎥</div>
+          <h3 class="font-semibold text-white mt-3">HD video chat</h3>
+          <p class="text-sm text-slate-400 mt-1">Peer-to-peer WebRTC - your video never touches our servers.</p>
+        </div>
+        <div class="bg-jpanel border border-jborder rounded-2xl p-6">
+          <div class="text-3xl">🛡️</div>
+          <h3 class="font-semibold text-white mt-3">Safety first</h3>
+          <p class="text-sm text-slate-400 mt-1">Report &amp; ban tools and rate limiting keep things civil.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== How it works ===== -->
+    <section id="how" class="bg-jpanel/40 border-y border-jborder">
+      <div class="max-w-6xl mx-auto px-4 py-14">
+        <h2 class="text-3xl font-bold text-center text-white">How it works</h2>
+        <div class="grid sm:grid-cols-3 gap-6 mt-10">
+          <div class="text-center">
+            <div class="w-12 h-12 mx-auto rounded-full bg-jgreen text-jdark font-bold flex items-center justify-center text-lg">1</div>
+            <h3 class="font-semibold text-white mt-4">Pick a nickname</h3>
+            <p class="text-sm text-slate-400 mt-1">Choose a name for this session - nothing is saved.</p>
+          </div>
+          <div class="text-center">
+            <div class="w-12 h-12 mx-auto rounded-full bg-jcyan text-jdark font-bold flex items-center justify-center text-lg">2</div>
+            <h3 class="font-semibold text-white mt-4">Get matched</h3>
+            <p class="text-sm text-slate-400 mt-1">We pair you with a stranger, preferring shared interests.</p>
+          </div>
+          <div class="text-center">
+            <div class="w-12 h-12 mx-auto rounded-full bg-jblue text-white font-bold flex items-center justify-center text-lg">3</div>
+            <h3 class="font-semibold text-white mt-4">Chat &amp; skip</h3>
+            <p class="text-sm text-slate-400 mt-1">Say hi, and press Next anytime to meet someone new.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Discord community ===== -->
+    <section class="max-w-6xl mx-auto px-4 py-14">
+      <div class="bg-gradient-to-r from-indigo-900/40 to-jblue/20 border border-jborder rounded-3xl p-8 text-center">
+        <h2 class="text-2xl font-bold text-white">Join our community</h2>
+        <p class="text-slate-400 mt-2">Hang out, share feedback, and meet other Jumingle users on Discord.</p>
+        <a id="discord-link" href="#" target="_blank" rel="noopener"
+          class="inline-block mt-5 bg-indigo-500 text-white font-semibold px-6 py-3 rounded-xl hover:opacity-90">
+          💬 Join the Discord
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== Privacy notice ===== -->
+    <section class="max-w-3xl mx-auto px-4 pb-14">
+      <div class="bg-jpanel border border-jborder rounded-2xl p-6 text-sm text-slate-400">
+        <h3 class="font-semibold text-white mb-2">🔒 Your privacy</h3>
+        <p>
+          Jumingle is anonymous by design. We don't ask for your name or email.
+          Video and audio are sent directly between you and the other person and are
+          never recorded. We store only the minimum needed to keep the service safe
+          (a hashed IP for bans, basic counts). Read our
+          <a href="/privacy.html" class="underline hover:text-slate-200">Privacy Policy</a>.
+        </p>
+      </div>
+    </section>
   </main>
 
-  <footer class="text-center text-xs text-gray-400 py-4">
-    &copy; 2025 Jumingle
+  <!-- ===== Footer ===== -->
+  <footer class="border-t border-jborder">
+    <div class="max-w-6xl mx-auto px-4 py-8 grid sm:grid-cols-3 gap-6 text-sm">
+      <div>
+        <div class="flex items-center gap-2">
+          <img src="/assets/logo.svg" class="w-7 h-7" alt="Jumingle" />
+          <span class="font-bold text-white">Jumingle</span>
+        </div>
+        <p class="text-slate-500 mt-2">Anonymous text &amp; video chat with strangers.</p>
+      </div>
+      <div>
+        <h4 class="text-slate-300 font-semibold mb-2">Product</h4>
+        <ul class="space-y-1 text-slate-500">
+          <li><a href="/text-chat.html" class="hover:text-jgreen">Text chat</a></li>
+          <li><a href="/video-chat.html" class="hover:text-jgreen">Video chat</a></li>
+          <li><a href="/about.html" class="hover:text-jgreen">About</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-slate-300 font-semibold mb-2">Legal &amp; help</h4>
+        <ul class="space-y-1 text-slate-500">
+          <li><a href="/privacy.html" class="hover:text-jgreen">Privacy</a></li>
+          <li><a href="/terms.html" class="hover:text-jgreen">Terms</a></li>
+          <li><a href="/contact.html" class="hover:text-jgreen">Contact</a></li>
+          <li><a href="/support.html" class="hover:text-jgreen">Support</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center text-xs text-slate-600 pb-6">&copy; 2026 Jumingle. Be kind out there. 🌴</div>
   </footer>
 
   <script src="/js/main.js"></script>

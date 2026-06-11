@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact - Jumingle</title>
+  <link rel="icon" href="/assets/favicon.svg" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: {
+      jgreen: '#22C55E', jblue: '#0EA5E9', jdark: '#0B1220', jpanel: '#111A2E', jborder: '#1E293B'
+    } } } };
+  </script>
+</head>
+<body class="bg-jdark text-slate-300">
+  <nav class="bg-jpanel border-b border-jborder">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center gap-2">
+      <a href="/" class="flex items-center gap-2"><img src="/assets/logo.svg" class="w-8 h-8" alt="Jumingle" />
+      <span class="font-bold text-white">Jumingle</span></a>
+    </div>
+  </nav>
+  <main class="max-w-3xl mx-auto px-4 py-10">
+    <h1 class="text-2xl font-bold text-white">Contact us</h1>
+    <div class="space-y-4 text-sm leading-6 mt-4">
+      <p>Have a question, partnership idea, or a safety concern? We'd love to hear from you.</p>
+      <div class="bg-jpanel border border-jborder rounded-2xl p-6 space-y-3">
+        <div>
+          <div class="text-slate-500 text-xs uppercase tracking-wide">Email</div>
+          <a id="contact-email" href="mailto:support@example.com" class="text-jgreen">support@example.com</a>
+        </div>
+        <div>
+          <div class="text-slate-500 text-xs uppercase tracking-wide">Discord</div>
+          <a id="contact-discord" href="#" target="_blank" rel="noopener" class="text-jblue">Join our community server</a>
+        </div>
+        <div>
+          <div class="text-slate-500 text-xs uppercase tracking-wide">Report abuse</div>
+          <p class="text-slate-400">Use the in-chat Report button, or email us with details so we can act quickly.</p>
+        </div>
+      </div>
+    </div>
+    <a href="/" class="inline-block mt-8 text-sm text-jgreen hover:underline">&larr; Back home</a>
+  </main>
+  <script>
+    fetch('/api/config').then(r => r.json()).then(cfg => {
+      if (cfg.discordUrl && cfg.discordUrl !== '#') {
+        document.getElementById('contact-discord').href = cfg.discordUrl;
+      }
+    }).catch(() => {});
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support - Jumingle</title>
+  <link rel="icon" href="/assets/favicon.svg" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: {
+      jgreen: '#22C55E', jblue: '#0EA5E9', jdark: '#0B1220', jpanel: '#111A2E', jborder: '#1E293B'
+    } } } };
+  </script>
+</head>
+<body class="bg-jdark text-slate-300">
+  <nav class="bg-jpanel border-b border-jborder">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center gap-2">
+      <a href="/" class="flex items-center gap-2"><img src="/assets/logo.svg" class="w-8 h-8" alt="Jumingle" />
+      <span class="font-bold text-white">Jumingle</span></a>
+    </div>
+  </nav>
+  <main class="max-w-3xl mx-auto px-4 py-10">
+    <h1 class="text-2xl font-bold text-white">Support &amp; FAQ</h1>
+    <div class="space-y-4 mt-6">
+      <div class="bg-jpanel border border-jborder rounded-2xl p-5">
+        <h3 class="font-semibold text-white">My camera doesn't work</h3>
+        <p class="text-sm text-slate-400 mt-1">Video chat needs HTTPS and camera permission. Make sure you allowed access in your browser, and that no other app is using the camera. On strict networks a TURN server may be required.</p>
+      </div>
+      <div class="bg-jpanel border border-jborder rounded-2xl p-5">
+        <h3 class="font-semibold text-white">It says I'm blocked</h3>
+        <p class="text-sm text-slate-400 mt-1">Your access may have been temporarily restricted after a report. Temporary bans expire automatically. If you think this is a mistake, contact us.</p>
+      </div>
+      <div class="bg-jpanel border border-jborder rounded-2xl p-5">
+        <h3 class="font-semibold text-white">How do I report someone?</h3>
+        <p class="text-sm text-slate-400 mt-1">Press the <strong>Report</strong> button during a chat and tell us what happened. Our moderators review reports and can ban offenders.</p>
+      </div>
+      <div class="bg-jpanel border border-jborder rounded-2xl p-5">
+        <h3 class="font-semibold text-white">Is it really anonymous?</h3>
+        <p class="text-sm text-slate-400 mt-1">Yes. No account, no email. We only keep a hashed IP for safety and a few anonymous counters. See our <a href="/privacy.html" class="text-jgreen underline">Privacy Policy</a>.</p>
+      </div>
+    </div>
+    <p class="text-sm text-slate-400 mt-6">Still stuck? Reach us on the <a href="/contact.html" class="text-jgreen underline">contact page</a>.</p>
+    <a href="/" class="inline-block mt-8 text-sm text-jgreen hover:underline">&larr; Back home</a>
+  </main>
+</body>
+</html>

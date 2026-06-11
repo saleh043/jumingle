@@ -4,32 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Terms of Service - Jumingle</title>
-  <link rel="icon" href="/favicon.svg" />
+  <link rel="icon" href="/assets/favicon.svg" />
+  <link rel="stylesheet" href="/css/style.css" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: {
+      jgreen: '#22C55E', jblue: '#0EA5E9', jdark: '#0B1220', jpanel: '#111A2E', jborder: '#1E293B'
+    } } } };
+  </script>
 </head>
-<body class="bg-gray-50 text-gray-700">
-  <nav class="bg-white shadow-sm">
+<body class="bg-jdark text-slate-300">
+  <nav class="bg-jpanel border-b border-jborder">
     <div class="max-w-3xl mx-auto px-4 py-3 flex items-center gap-2">
-      <a href="/" class="flex items-center gap-2"><img src="/logo.svg" class="w-8 h-8" alt="Jumingle" />
-      <span class="font-bold text-gray-900">Jumingle</span></a>
+      <a href="/" class="flex items-center gap-2"><img src="/assets/logo.svg" class="w-8 h-8" alt="Jumingle" />
+      <span class="font-bold text-white">Jumingle</span></a>
     </div>
   </nav>
   <main class="max-w-3xl mx-auto px-4 py-10">
-    <h1 class="text-2xl font-bold text-gray-900">Terms of Service</h1>
-    <p class="text-sm text-gray-400 mb-6">This is a starter template. Replace it with text reviewed by a lawyer before launch.</p>
+    <h1 class="text-2xl font-bold text-white">Terms of Service</h1>
+    <p class="text-sm text-slate-500 mb-6">A starter template. Have a lawyer review your terms before a public launch.</p>
     <div class="space-y-4 text-sm leading-6">
-      <h2 class="font-semibold text-gray-900">1. You must be 18+</h2>
+      <h2 class="font-semibold text-white">1. You must be 18+</h2>
       <p>Jumingle is for adults only. By using it you confirm you are at least 18 years old.</p>
-      <h2 class="font-semibold text-gray-900">2. Be respectful</h2>
-      <p>No harassment, hate, threats, or illegal activity. No sexual content involving minors of any kind, ever. Violations lead to an immediate ban and may be reported to authorities.</p>
-      <h2 class="font-semibold text-gray-900">3. No recording others</h2>
-      <p>Do not record or screenshot other users without consent.</p>
-      <h2 class="font-semibold text-gray-900">4. Moderation</h2>
-      <p>We may ban any user or IP address at our discretion to keep the platform safe.</p>
-      <h2 class="font-semibold text-gray-900">5. No warranty</h2>
-      <p>The service is provided "as is" without guarantees of availability.</p>
+      <h2 class="font-semibold text-white">2. Be respectful</h2>
+      <p>No harassment, hate speech, threats, sexual content involving minors, or illegal activity. Violations may result in a temporary or permanent ban.</p>
+      <h2 class="font-semibold text-white">3. No recording or sharing</h2>
+      <p>Do not record, screenshot, or redistribute other users' video, audio, or messages without consent.</p>
+      <h2 class="font-semibold text-white">4. Reporting</h2>
+      <p>Use the Report button to flag bad behaviour. We may store report metadata and a short message snapshot to act on abuse.</p>
+      <h2 class="font-semibold text-white">5. No warranty</h2>
+      <p>The service is provided "as is" without warranties. We are not responsible for the conduct of other users.</p>
+      <h2 class="font-semibold text-white">6. Changes</h2>
+      <p>We may update these terms. Continued use means you accept the changes.</p>
     </div>
-    <a href="/" class="inline-block mt-8 text-sm text-emerald-600 hover:underline">&larr; Back home</a>
+    <a href="/" class="inline-block mt-8 text-sm text-jgreen hover:underline">&larr; Back home</a>
   </main>
 </body>
 </html>

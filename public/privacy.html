@@ -4,31 +4,37 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy - Jumingle</title>
-  <link rel="icon" href="/favicon.svg" />
+  <link rel="icon" href="/assets/favicon.svg" />
+  <link rel="stylesheet" href="/css/style.css" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: {
+      jgreen: '#22C55E', jblue: '#0EA5E9', jdark: '#0B1220', jpanel: '#111A2E', jborder: '#1E293B'
+    } } } };
+  </script>
 </head>
-<body class="bg-gray-50 text-gray-700">
-  <nav class="bg-white shadow-sm">
+<body class="bg-jdark text-slate-300">
+  <nav class="bg-jpanel border-b border-jborder">
     <div class="max-w-3xl mx-auto px-4 py-3 flex items-center gap-2">
-      <a href="/" class="flex items-center gap-2"><img src="/logo.svg" class="w-8 h-8" alt="Jumingle" />
-      <span class="font-bold text-gray-900">Jumingle</span></a>
+      <a href="/" class="flex items-center gap-2"><img src="/assets/logo.svg" class="w-8 h-8" alt="Jumingle" />
+      <span class="font-bold text-white">Jumingle</span></a>
     </div>
   </nav>
   <main class="max-w-3xl mx-auto px-4 py-10">
-    <h1 class="text-2xl font-bold text-gray-900">Privacy Policy</h1>
-    <p class="text-sm text-gray-400 mb-6">This is a starter template. Replace it with text reviewed by a lawyer before launch.</p>
+    <h1 class="text-2xl font-bold text-white">Privacy Policy</h1>
+    <p class="text-sm text-slate-500 mb-6">This is a starter template. Replace it with text reviewed by a lawyer before launch.</p>
     <div class="space-y-4 text-sm leading-6">
-      <p>Jumingle lets you chat with random strangers without creating an account. We try to collect as little as possible.</p>
-      <h2 class="font-semibold text-gray-900">What we store</h2>
-      <p>We temporarily store your IP address to operate the service, enforce bans, and keep the platform safe. We log a random temporary nickname and connection time. Reports you submit are stored so moderators can review them.</p>
-      <h2 class="font-semibold text-gray-900">Video and text content</h2>
-      <p>Video and audio are sent directly between you and the other person (peer-to-peer) and are not recorded by us. Text messages pass through our server only to be delivered and are not permanently stored.</p>
-      <h2 class="font-semibold text-gray-900">Your safety</h2>
+      <p>Jumingle lets you chat with random strangers without creating an account. We collect as little as possible.</p>
+      <h2 class="font-semibold text-white">What we store</h2>
+      <p>We store a one-way <strong>hash</strong> of your IP address (never the raw IP) so we can enforce bans and keep the platform safe. We keep simple anonymous counters (visits, chats started/completed, reports). Your nickname lives only in your browser for the current session.</p>
+      <h2 class="font-semibold text-white">Video and text content</h2>
+      <p>Video and audio are sent directly between you and the other person (peer-to-peer) and are not recorded by us. Text messages pass through our server only to be delivered and are not written to disk. If you report someone, the last few messages of that conversation are held briefly in server memory so a moderator can review them, then discarded.</p>
+      <h2 class="font-semibold text-white">Your safety</h2>
       <p>Never share personal information (full name, address, phone, financial details). You must be 18 or older to use Jumingle.</p>
-      <h2 class="font-semibold text-gray-900">Contact</h2>
-      <p>Add your contact email here.</p>
+      <h2 class="font-semibold text-white">Contact</h2>
+      <p>Questions? Visit our <a href="/contact.html" class="text-jgreen underline">contact page</a>.</p>
     </div>
-    <a href="/" class="inline-block mt-8 text-sm text-emerald-600 hover:underline">&larr; Back home</a>
+    <a href="/" class="inline-block mt-8 text-sm text-jgreen hover:underline">&larr; Back home</a>
   </main>
 </body>
 </html>

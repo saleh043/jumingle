@@ -4,72 +4,89 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Text Chat - Jumingle</title>
-  <link rel="icon" href="/favicon.svg" />
+  <link rel="icon" href="/assets/favicon.svg" />
   <link rel="stylesheet" href="/css/style.css" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { theme: { extend: { colors: {
-      jgreen: '#22C55E', jblue: '#0EA5E9', jdark: '#111827'
+      jgreen: '#22C55E', jblue: '#0EA5E9', jcyan: '#22D3EE',
+      jdark: '#0B1220', jpanel: '#111A2E', jborder: '#1E293B'
     } } } };
   </script>
 </head>
-<body class="bg-gray-50 h-screen flex flex-col">
+<body class="bg-jdark text-slate-200 h-screen flex flex-col">
 
-  <!-- ===== Top: logo + connection status ===== -->
-  <header class="bg-white shadow-sm shrink-0">
+  <!-- ===== Header ===== -->
+  <header class="bg-jpanel border-b border-jborder shrink-0">
     <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
       <a href="/" class="flex items-center gap-2">
-        <img src="/logo.svg" alt="Jumingle" class="w-8 h-8" />
-        <span class="font-bold text-jdark">Jumingle</span>
+        <img src="/assets/logo.svg" alt="Jumingle" class="w-8 h-8" />
+        <span class="font-bold text-white">Jumingle</span>
       </a>
-      <div id="status" class="text-sm font-medium text-gray-500">Connecting...</div>
+      <div id="status" class="text-sm font-medium text-slate-400">Connecting...</div>
     </div>
   </header>
 
-  <!-- ===== Middle: messages ===== -->
+  <!-- ===== Messages ===== -->
   <main id="messages" class="scroll-area flex-1 overflow-y-auto">
     <div class="max-w-3xl mx-auto px-4 py-4 flex flex-col"></div>
   </main>
 
-  <!-- ===== Bottom: input + buttons ===== -->
-  <footer class="bg-white border-t shrink-0">
+  <!-- Typing indicator -->
+  <div id="typing" class="max-w-3xl mx-auto w-full px-4 hidden">
+    <div class="typing-dots text-xs text-slate-400 pb-1">Stranger is typing<span>.</span><span>.</span><span>.</span></div>
+  </div>
+
+  <!-- ===== Input + controls ===== -->
+  <footer class="bg-jpanel border-t border-jborder shrink-0">
     <div class="max-w-3xl mx-auto px-4 py-3">
       <div class="flex gap-2">
         <button id="btn-next"
           class="bg-jblue text-white font-semibold px-4 rounded-xl hover:opacity-90">Next</button>
-        <input id="input" type="text" placeholder="Type a message and press Enter..."
-          class="flex-1 border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-jgreen" />
+        <input id="input" type="text" autocomplete="off" placeholder="Type a message and press Enter..."
+          class="flex-1 bg-jdark border border-jborder rounded-xl px-4 py-2.5 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-jgreen" />
         <button id="btn-send"
-          class="bg-jgreen text-white font-semibold px-5 rounded-xl hover:opacity-90">Send</button>
+          class="bg-jgreen text-jdark font-semibold px-5 rounded-xl hover:opacity-90">Send</button>
       </div>
-      <div class="flex justify-between items-center mt-2 text-xs text-gray-400">
+      <div class="flex justify-between items-center mt-2 text-xs text-slate-500">
         <span>Enter = Send &nbsp;&middot;&nbsp; ESC = Next stranger</span>
         <div class="flex gap-3">
-          <button id="btn-report" class="hover:text-red-500">Report</button>
-          <button id="btn-stop" class="hover:text-jdark">Disconnect</button>
+          <button id="btn-report" class="hover:text-red-400">Report</button>
+          <button id="btn-stop" class="hover:text-white">Disconnect</button>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- ===== 18+ age gate (shown once, before the first chat) ===== -->
-  <div id="age-gate" class="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center">
-      <img src="/logo.svg" class="w-12 h-12 mx-auto" alt="Jumingle" />
-      <h2 class="text-lg font-bold text-jdark mt-3">Before you start</h2>
-      <p class="text-sm text-gray-500 mt-2">
-        Jumingle connects you with random strangers. You must be 18 or older.
-        Do not share personal information. Be respectful.
+  <!-- ===== Nickname + 18+ modal (shown before chatting) ===== -->
+  <div id="nick-gate" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
+    <div class="bg-jpanel border border-jborder rounded-2xl max-w-sm w-full p-6 text-center">
+      <img src="/assets/logo.svg" class="w-12 h-12 mx-auto" alt="Jumingle" />
+      <h2 class="text-lg font-bold text-white mt-3">Choose a nickname</h2>
+      <p class="text-sm text-slate-400 mt-2">
+        Pick a name for this chat. It is stored only for this session and never saved.
       </p>
-      <button id="age-ok"
-        class="mt-5 w-full bg-jgreen text-white font-semibold py-3 rounded-xl hover:opacity-90">
-        I am 18 or older - Start
-      </button>
-      <a href="/" class="block mt-3 text-sm text-gray-400 hover:text-jdark">Leave</a>
+      <form id="nick-form" class="mt-4 text-left">
+        <input id="nick-input" type="text" maxlength="20" placeholder="e.g. PalmTiger"
+          class="w-full bg-jdark border border-jborder rounded-xl px-4 py-2.5 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-jgreen" />
+        <label class="flex items-start gap-2 mt-3 text-xs text-slate-400">
+          <input id="nick-agree" type="checkbox" class="mt-0.5" />
+          <span>I am 18 or older and agree to the
+            <a href="/terms.html" class="underline">Terms</a> and
+            <a href="/privacy.html" class="underline">Privacy Policy</a>.</span>
+        </label>
+        <p id="nick-error" class="text-red-400 text-xs mt-2 hidden"></p>
+        <button type="submit"
+          class="mt-4 w-full bg-jgreen text-jdark font-semibold py-3 rounded-xl hover:opacity-90">
+          Start chatting
+        </button>
+      </form>
+      <a href="/" class="block mt-3 text-sm text-slate-500 hover:text-white">Leave</a>
     </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/session.js"></script>
   <script src="/js/chat.js"></script>
 </body>
 </html>
