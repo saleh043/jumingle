@@ -1,26 +1,42 @@
 /* =====================================================================
-   Jumingle - style.css
-   Tailwind (loaded from a CDN in each HTML page) does most of the work.
-   This file only adds a few small things Tailwind can't do as cleanly:
-   brand colours, chat bubbles, the video layout, and smooth transitions.
+   Jumingle - style.css  (DARK THEME)
+   Tailwind (loaded from a CDN in each page) does most of the layout.
+   This file adds brand colours, chat bubbles, the video layout, and a
+   few small touches Tailwind cannot express as cleanly.
    ===================================================================== */
 
-/* Brand colours kept in one place so they are easy to change. */
 :root {
-  --green: #22C55E;
-  --blue:  #0EA5E9;
-  --dark:  #111827;
+  --green: #22c55e;
+  --blue: #0ea5e9;
+  --cyan: #22d3ee;
+  --dark: #0b1220; /* page background */
+  --panel: #111a2e; /* cards / panels */
+  --panel-2: #0f172a;
+  --border: #1e293b;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
 }
 
-/* A soft, friendly page background. */
+html {
+  scroll-behavior: smooth;
+}
 body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  color: var(--dark);
+  background: var(--dark);
+  color: var(--text);
 }
 
-/* Make every button feel smooth when hovered or pressed. */
-button, a {
+button,
+a {
   transition: all 0.15s ease;
+}
+
+/* Soft brand glow used behind hero headings. */
+.brand-gradient {
+  background: linear-gradient(90deg, var(--green), var(--cyan), var(--blue));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* ---- Chat message bubbles ---- */
@@ -29,58 +45,64 @@ button, a {
   padding: 10px 14px;
   border-radius: 16px;
   margin: 6px 0;
-  line-height: 1.4;
+  line-height: 1.45;
   word-wrap: break-word;
+  white-space: pre-wrap;
 }
-.bubble-you {           /* messages I send */
+.bubble-you {
   background: var(--green);
-  color: #fff;
+  color: #06210f;
   margin-left: auto;
   border-bottom-right-radius: 4px;
 }
-.bubble-stranger {      /* messages from the stranger */
-  background: #e5e7eb;
-  color: var(--dark);
+.bubble-stranger {
+  background: #1e293b;
+  color: var(--text);
   margin-right: auto;
   border-bottom-left-radius: 4px;
 }
-.bubble-system {        /* grey centred status notes */
+.bubble-system {
   background: transparent;
-  color: #6b7280;
+  color: var(--muted);
   font-size: 0.85rem;
   text-align: center;
   margin: 8px auto;
 }
 
-/* A nicer, thin scrollbar for the chat area. */
-.scroll-area::-webkit-scrollbar { width: 8px; }
-.scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+/* Thin custom scrollbar for the chat area. */
+.scroll-area::-webkit-scrollbar {
+  width: 8px;
+}
+.scroll-area::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 8px;
+}
 
 /* ---- Video chat layout ---- */
 .video-stage {
   position: relative;
   background: #000;
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
+  border: 1px solid var(--border);
 }
 .video-stage video {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-/* The small "you" preview floats in the bottom-right corner. */
 .local-preview {
   position: absolute;
-  bottom: 12px;
-  right: 12px;
+  bottom: 14px;
+  right: 14px;
   width: 28%;
-  max-width: 180px;
-  border: 3px solid #fff;
+  max-width: 190px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
   z-index: 10;
+  background: #0b1220;
 }
-/* The "Searching for stranger..." overlay sits on top of the video. */
 .overlay {
   position: absolute;
   inset: 0;
@@ -88,25 +110,77 @@ button, a {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   color: #fff;
-  background: rgba(17, 24, 39, 0.85);
+  background: rgba(11, 18, 32, 0.9);
   z-index: 20;
   text-align: center;
   padding: 20px;
 }
 
-/* A simple spinning loader. */
 .spinner {
-  width: 40px; height: 40px;
-  border: 4px solid rgba(255,255,255,0.3);
+  width: 42px;
+  height: 42px;
+  border: 4px solid rgba(255, 255, 255, 0.18);
   border-top-color: var(--green);
   border-radius: 50%;
   animation: spin 0.9s linear infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
-/* Respect users who prefer no animation (accessibility). */
+/* Typing dots */
+.typing-dots span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 0 1px;
+  background: var(--muted);
+  border-radius: 50%;
+  animation: blink 1.2s infinite both;
+}
+.typing-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.typing-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+@keyframes blink {
+  0%,
+  80%,
+  100% {
+    opacity: 0.2;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+/* Banner ad placeholder (homepage only). */
+.ad-banner {
+  border: 1px dashed #334155;
+  border-radius: 14px;
+  background: repeating-linear-gradient(
+    45deg,
+    #0f172a,
+    #0f172a 12px,
+    #111a2e 12px,
+    #111a2e 24px
+  );
+  color: var(--muted);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  *, button, a { transition: none !important; animation: none !important; }
+  *,
+  button,
+  a {
+    transition: none !important;
+    animation: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
 }

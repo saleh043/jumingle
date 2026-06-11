@@ -1,10 +1,14 @@
 {
   "name": "jumingle",
-  "version": "1.0.0",
-  "description": "Jumingle - a simple anonymous text & video chat with strangers (Omegle/Uhmegle style).",
+  "version": "2.0.0",
+  "description": "Jumingle - a modern, anonymous text & video chat platform (Omegle/Uhmegle style) built on a single Node.js server, Socket.IO, WebRTC and SQLite.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
     "better-sqlite3": "^12.10.0",

@@ -1,161 +1,180 @@
 # Jumingle 🌴📷
 
-A lightweight, anonymous **text & video chat with strangers** (Omegle / Uhmegle style).
-Built to be read and edited by **one developer with basic programming knowledge** — plain
-HTML/CSS/JS on the front end, a single `server.js` on the back end. No React, no build step.
+A modern, **anonymous text & video chat platform** (Omegle / Uhmegle style),
+built to stay **simple enough for one developer** to run and maintain — a single
+Node.js server, Socket.IO, WebRTC, and SQLite. No React, no build step, no Redis,
+no microservices.
 
 ---
 
-## What's inside
+## ✨ What's included
+
+- **Anonymous text & video chat** with real-time messaging (Socket.IO).
+- **WebRTC video** (peer-to-peer) with local preview, **TURN-ready** via env vars.
+- **Queue-based matchmaking** that prefers shared **interests**, falls back to random.
+- **Nickname modal** before chatting — validated and **session-only** (sessionStorage).
+- **Session recovery**: reconnect within ~30s and resume the same conversation.
+- **Reporting**: stores only **metadata in SQLite** + the **last 10 messages in memory**.
+- **Ban system**: temporary or permanent, keyed by a **hashed IP** (raw IPs are never stored).
+- **Basic analytics** in SQLite: visits, chats started/completed, reports submitted, live online.
+- **Security middleware**: rate limiting, input sanitization, XSS protection, socket
+  abuse prevention, security headers, and a **maintenance mode** switch.
+- **Modern dark, responsive UI** with TailwindCSS (CDN only).
+- Full set of pages: home, text chat, video chat, admin, privacy, terms, about,
+  contact, support, banned, maintenance.
+
+---
+
+## 📁 Project structure
 
 ```
-JUMINGLE/
-├── server.js            ← the ONLY backend file (Express + Socket.IO + SQLite)
-├── package.json
-├── database/            ← database.db is created here automatically on first run
-└── public/              ← everything the browser loads
-    ├── index.html       ← homepage
-    ├── text-chat.html   ← text chat
-    ├── video-chat.html  ← video chat (WebRTC)
-    ├── admin.html       ← hidden admin panel  (/admin.html)
-    ├── privacy.html
-    ├── terms.html
-    ├── logo.svg         ← palm-tree + webcam logo (also the favicon)
-    ├── favicon.svg
-    ├── css/style.css
-    └── js/
-        ├── main.js      ← homepage
-        ├── chat.js      ← text chat
-        ├── video.js     ← video chat / WebRTC
-        └── admin.js     ← admin panel
+jumingle/
+├── server.js              ← entry point: wires middleware, routes & sockets
+├── config.js              ← all settings, read from environment variables
+├── .env.example           ← copy to .env for local development
+├── services/              ← business logic
+│   ├── database.js        ← SQLite setup + prepared statements
+│   ├── matchmaking.js     ← queue pairing + session recovery (in memory)
+│   ├── sockets.js         ← all Socket.IO event handling
+│   ├── reports.js         ← report metadata (DB) + last-10 messages (memory)
+│   ├── bans.js            ← IP hashing + temporary/permanent bans
+│   └── analytics.js       ← simple SQLite counters
+├── middleware/
+│   ├── security.js        ← security headers, sanitize, escapeHtml
+│   ├── rateLimit.js       ← HTTP limiter + socket sliding-window limiter
+│   ├── maintenance.js     ← maintenance-mode gate
+│   └── adminAuth.js       ← password protection for the admin API
+├── assets/                ← logo.svg + favicon.svg (webcam + palm tree)
+├── public/                ← everything the browser loads
+│   ├── index.html         ← homepage (hero, features, how-it-works, Discord…)
+│   ├── text-chat.html · video-chat.html · admin.html
+│   ├── privacy.html · terms.html · about.html · contact.html · support.html
+│   ├── banned.html · maintenance.html
+│   ├── css/style.css
+│   └── js/  main.js · session.js · chat.js · video.js · admin.js
+├── database/              ← database.db is created here on first run (gitignored)
+└── logs/                  ← reserved for log output (gitignored)
 ```
 
 ---
 
-## 1. Requirements
+## 🚀 Run it locally
 
-- **Node.js 18 or newer** (download from nodejs.org).
-- Because the database (`better-sqlite3`) is a small native module, the first
-  `npm install` may compile it. On most systems this just works. If it complains,
-  install build tools first:
-  - **Windows:** `npm install --global windows-build-tools` (or install "Desktop
-    development with C++" in Visual Studio).
-  - **Mac:** `xcode-select --install`
-  - **Ubuntu/Debian:** `sudo apt-get install -y build-essential python3`
-
-## 2. Run it on your computer
+Requires **Node.js 18+**.
 
 ```bash
-cd JUMINGLE
-npm install        # downloads express, socket.io, better-sqlite3
-npm start          # starts the server
+npm install            # express, socket.io, better-sqlite3
+cp .env.example .env   # then edit .env (set ADMIN_PASSWORD, IP_HASH_SALT)
+npm start              # http://localhost:3000
 ```
 
-Then open **http://localhost:3000** in your browser.
-
-> 💡 To test video chat you need **two** browser tabs/windows (or two devices).
-> Each one becomes a different "stranger".
-
-## 3. The admin panel
-
-Go to **http://localhost:3000/admin.html**.
-
-- Default password is `changeme123`.
-- **Change it!** Set an environment variable before starting:
-  ```bash
-  ADMIN_PASSWORD="your-strong-password" npm start
-  ```
-- The admin page shows users online, active chats, reports, and bans, and lets you
-  ban / unban an IP address.
-
-## 4. Settings you can change
-
-Open `server.js` and look at the **SETTINGS** section near the top:
-
-| Setting | What it does |
-|---|---|
-| `PORT` | Which port the server runs on (default 3000). |
-| `ADMIN_PASSWORD` | Admin panel password. |
-| `BAN_HOURS` | How long an IP ban lasts. |
-| `RATE_LIMIT_MAX` / `RATE_LIMIT_WINDOW_MS` | Anti-spam message limit. |
-| `BAD_WORDS` | Words the profanity filter replaces with `****`. |
+> 💡 To test chat you need **two** browser tabs/windows — each becomes a different
+> "stranger". Video chat also needs HTTPS in production (see below).
 
 ---
 
-## 5. Putting it online (deployment)
+## ⚙️ Environment variables
 
-You need a host that runs Node.js (a small VPS, Render, Railway, Fly.io, etc.).
+Everything is configured through env vars (see `.env.example`):
 
-A simple recipe on a Linux VPS:
+| Variable | Default | Purpose |
+|---|---|---|
+| `PORT` | `3000` | Port to listen on. |
+| `NODE_ENV` | `development` | Environment label. |
+| `TRUST_PROXY` | `true` | Honour `X-Forwarded-For` behind Render/Nginx. |
+| `ADMIN_PASSWORD` | `changeme123` | **Change this.** Admin panel password. |
+| `IP_HASH_SALT` | (placeholder) | **Change this.** Salt for hashing IPs. Keep stable. |
+| `MAINTENANCE_MODE` | `false` | When `true`, shows the maintenance page to everyone. |
+| `DEFAULT_BAN_HOURS` | `24` | Length of a temporary ban. |
+| `SESSION_RECOVERY_MS` | `30000` | Reconnect window (ms) to resume a chat. |
+| `MAX_INTERESTS` | `5` | Max interests considered for matching. |
+| `MAX_MESSAGE_LENGTH` | `1000` | Max chars per message. |
+| `MSG_RATE_MAX` / `MSG_RATE_WINDOW_MS` | `8` / `10000` | Anti-spam message limit. |
+| `FIND_RATE_MAX` / `FIND_RATE_WINDOW_MS` | `30` / `10000` | "Next" press limit. |
+| `REPORT_LOG_SIZE` | `10` | Messages kept in memory per report. |
+| `STUN_URLS` | Google STUN | Comma-separated STUN urls. |
+| `TURN_URLS` | (empty) | Comma-separated TURN urls (needed on strict networks). |
+| `TURN_USERNAME` / `TURN_CREDENTIAL` | (empty) | TURN credentials. |
+| `DISCORD_URL` | `#` | Community link used on the homepage/contact. |
+| `CONTACT_EMAIL` | `support@example.com` | Shown on the contact page. |
 
-```bash
-# on the server
-git clone <your repo>   # or upload the JUMINGLE folder
-cd JUMINGLE
-npm install
-ADMIN_PASSWORD="strong-pw" PORT=3000 npm start
-```
+---
 
-Then put **Nginx (or Caddy)** in front of it for HTTPS.
+## 🔐 Admin panel
 
-### ⚠️ Two things video chat MUST have in production
+Visit **`/admin.html`**, log in with `ADMIN_PASSWORD`. You get:
 
-1. **HTTPS is required.** Browsers refuse camera/microphone access on plain `http://`
-   (except `localhost`). Use a free certificate (Caddy does this automatically, or use
-   Let's Encrypt with Nginx).
-2. **A TURN server.** The free Google STUN server in `js/video.js` is enough for many
-   connections, but some users behind strict networks won't connect without a **TURN**
-   server. The easiest path is a hosted TURN service (e.g. Twilio, Metered, or your own
-   `coturn`). Add it to `rtcConfig` in `public/js/video.js`:
-   ```js
-   const rtcConfig = { iceServers: [
-     { urls: 'stun:stun.l.google.com:19302' },
-     { urls: 'turn:YOUR_TURN_HOST:3478', username: 'user', credential: 'pass' }
-   ] };
+- **Live**: users online, active chats, queue size, active bans.
+- **All-time analytics**: visits, chats started/completed, reports submitted.
+- **Reports**: reason + reported nickname, a **"View log"** button (the last 10
+  messages, held in memory only), and a one-click **Ban**.
+- **Bans**: list of active temporary/permanent bans with **Unban**.
+- **Manual ban**: by hashed IP (from a report) or by raw IP, with a duration picker.
+
+---
+
+## 🎥 WebRTC & TURN (important for production)
+
+Video is peer-to-peer; the server only relays small "signal" messages. The ICE
+server list is sent to the browser from `/api/config`, built from your env vars.
+
+1. **HTTPS is required.** Browsers block camera/mic on plain `http://` (except
+   `localhost`). Use Caddy (auto-HTTPS) or Nginx + Let's Encrypt.
+2. **Add a TURN server** so users on strict networks can connect. A hosted TURN
+   service (Twilio, Metered) or your own `coturn` works. Then set:
+   ```
+   TURN_URLS=turn:turn.example.com:3478,turns:turn.example.com:5349
+   TURN_USERNAME=youruser
+   TURN_CREDENTIAL=yoursecret
    ```
 
-### Keep it running
-Use a process manager so it restarts on crash/reboot:
+---
+
+## 🌍 Deployment
+
+### Render
+
+1. Push this repo to GitHub and create a **Web Service** on Render.
+2. **Build command:** `npm install` — **Start command:** `npm start`.
+3. Add the environment variables above (at least `ADMIN_PASSWORD` and
+   `IP_HASH_SALT`). `TRUST_PROXY` should stay `true`.
+4. SQLite writes to the local disk. For data that survives deploys, attach a
+   **Render Disk** mounted at the project's `database/` folder.
+
+### VPS (Ubuntu example)
+
 ```bash
-npm install --global pm2
+git clone <your-repo> && cd jumingle
+npm install
+cp .env.example .env   # edit it (ADMIN_PASSWORD, IP_HASH_SALT, TURN_*)
+# keep it alive with pm2:
+npm i -g pm2
 pm2 start server.js --name jumingle
 pm2 save
 ```
 
----
-
-## 6. Please read this before launching publicly 🛑
-
-This kind of "random stranger video chat" is genuinely useful, but the category has a
-**serious, well-documented safety history** — Omegle itself shut down in 2023 largely
-because of abuse, including harm to minors. If you open this to the public, you are taking
-on real responsibility (and in many places, legal liability). The starter safety features
-here are a **foundation, not enough on their own**:
-
-- ✅ Included: 18+ confirmation gate, report button, profanity filter, message rate limit,
-  IP ban system, basic Terms/Privacy templates.
-- ⚠️ Strongly consider before a public launch:
-  - **Real age verification** (a checkbox is not enough for a video platform).
-  - **Live moderation** and a fast way to act on reports (e.g. auto-suspend an IP after
-    several reports).
-  - A clear, monitored way for users to report illegal content, and a process to preserve
-    evidence and contact authorities when required.
-  - Reviewing your **legal obligations** (age, content, data) with a lawyer for the
-    countries you operate in. The included Privacy/Terms pages are placeholders.
-  - Image/stream safety tooling if you scale up.
-
-Building it is fine; launching it responsibly is the hard part. Start small and private,
-and add moderation before you grow.
+Put **Caddy or Nginx** in front for HTTPS, then point it at `http://localhost:3000`.
 
 ---
 
-## 7. How it works (quick tour for editing)
+## 🛡️ Security notes
 
-- **Matchmaking** lives in `server.js` (`findMatch`). Users join a `waiting` queue; the
-  server pairs two people of the same mode (text/video), preferring a shared interest.
-- **Text messages** are relayed by the server (`message` event).
-- **Video** uses **WebRTC**: the server only passes small "signal" messages between the
-  two browsers (`signal` event); the actual video goes directly browser-to-browser.
-- **Reports & bans** are stored in SQLite and shown in the admin panel.
+- Raw IPs are **never stored** — only a salted SHA-256 hash (set a strong, stable
+  `IP_HASH_SALT`).
+- User text is sanitized (control chars stripped, length-clamped) and always
+  rendered with `textContent` / escaped HTML to prevent XSS.
+- Per-connection rate limits guard against message and "Next" spam; HTTP routes
+  have their own limiter.
+- Admin password is compared in constant time.
 
-Every function is commented — open any file and read top to bottom. Have fun! 🌴
+## 🛑 Before you launch publicly
+
+Random-stranger video chat has a serious safety history. The tools here (18+ gate,
+reports, bans, rate limits, hashed IPs) are a **foundation, not a guarantee**.
+Before a public launch, seriously consider real age verification, live moderation,
+a fast path to act on reports, image/stream safety tooling, and a legal review for
+your jurisdiction. Start small and private, and add moderation before you grow.
+
+---
+
+Every file is heavily commented — open any of them and read top to bottom. 🌴

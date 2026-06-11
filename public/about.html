@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About - Jumingle</title>
+  <link rel="icon" href="/assets/favicon.svg" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: {
+      jgreen: '#22C55E', jblue: '#0EA5E9', jdark: '#0B1220', jpanel: '#111A2E', jborder: '#1E293B'
+    } } } };
+  </script>
+</head>
+<body class="bg-jdark text-slate-300">
+  <nav class="bg-jpanel border-b border-jborder">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center gap-2">
+      <a href="/" class="flex items-center gap-2"><img src="/assets/logo.svg" class="w-8 h-8" alt="Jumingle" />
+      <span class="font-bold text-white">Jumingle</span></a>
+    </div>
+  </nav>
+  <main class="max-w-3xl mx-auto px-4 py-10">
+    <h1 class="text-2xl font-bold text-white">About Jumingle</h1>
+    <div class="space-y-4 text-sm leading-6 mt-4">
+      <p>Jumingle is a lightweight, anonymous text and video chat platform inspired by the classic "talk to a stranger" experience. There's no sign-up and no app to install - pick a nickname, choose text or video, and you're instantly connected with someone new from around the world.</p>
+      <h2 class="font-semibold text-white">Built simple, on purpose</h2>
+      <p>Jumingle runs on a single Node.js server with Socket.IO for realtime messaging and a small SQLite database. Video uses WebRTC, so streams travel directly between browsers and never touch our servers. It's designed to be easy for one developer to host and maintain.</p>
+      <h2 class="font-semibold text-white">Privacy by design</h2>
+      <p>We don't ask for your name or email. We store only a hashed IP for safety enforcement and a few anonymous counters. Read more in our <a href="/privacy.html" class="text-jgreen underline">Privacy Policy</a>.</p>
+    </div>
+    <a href="/" class="inline-block mt-8 text-sm text-jgreen hover:underline">&larr; Back home</a>
+  </main>
+</body>
+</html>
